@@ -14,8 +14,8 @@ namespace YK.Platform.Core.Pager
     public class Pager
     {
         public static IPager getInstance(string orgCode = null, string connectionString = null) { 
-            var connDic = new ConnectionHelper().GetConnectionDic(orgCode);
-            switch (connDic["provider"])
+            var organizationEntity = new ConnectionHelper().GetConnectionDic(orgCode);
+            switch (organizationEntity.Provider)
             {
                 case "System.Data.SqlClient":
                     return new SqlPager();

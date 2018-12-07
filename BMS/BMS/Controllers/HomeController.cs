@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using BMS.Models;
 using YK.Config.Model;
 using YK.Platform.Core;
+using YK.Platform.Core.Tools;
 
 namespace BMS.Controllers
 {
@@ -19,6 +20,8 @@ namespace BMS.Controllers
 
         public IActionResult Index()
         {
+            EntityReflectionDataBase refEntity = new EntityReflectionDataBase();
+            var list = refEntity.GetEntitys();
             var c =  Framework<User>.Instance().Find(n => n.IsEnable == true);
             int count = ConfigContext.Modules.Count();
             return View();

@@ -36,6 +36,24 @@ namespace YK.Platform.Core.SqlHelper
         }
 
         /// <summary>
+        /// 获取mysql参数
+        /// </summary>
+        /// <param name="spr"></param>
+        /// <returns></returns>
+        public List<MySqlParameter> GetMySqlParams(List<SqlParameter> spr)
+        {
+            List<MySqlParameter> list = new List<MySqlParameter>();
+            if (spr != null)
+            {
+                foreach (var item in spr)
+                {
+                    list.Add(new MySqlParameter(item.ParameterName, item.Value));
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
         /// 返回数据库连接对象
         /// </summary>
         /// <returns></returns>
@@ -66,7 +84,7 @@ namespace YK.Platform.Core.SqlHelper
        public int ExecuteNonQuery(CommandType commandType,string cmdText,List<SqlParameter> spr)
        {
            int i = 0;
-            List<MySqlParameter> listParam = SqlConvertHelper.GetMySqlParams(spr);
+            List<MySqlParameter> listParam = GetMySqlParams(spr);
             using (MySqlConnection conn = GetConnection())
            {
                conn.Open();
@@ -153,7 +171,7 @@ namespace YK.Platform.Core.SqlHelper
         /// <returns></returns>
         public DataSet GetDataSet(CommandType cmdType, string cmdText, List<SqlParameter> spr)
         {
-            List<MySqlParameter> listParam = SqlConvertHelper.GetMySqlParams(spr);
+            List<MySqlParameter> listParam = GetMySqlParams(spr);
             DataSet ds = new DataSet();
             using (MySqlConnection conn = GetConnection(false))
             {
@@ -235,7 +253,7 @@ namespace YK.Platform.Core.SqlHelper
         /// <returns></returns>
         public IDataReader ExecuteReader(CommandType cmdType, string cmdText, List<SqlParameter> spr)
         {
-            List<MySqlParameter> listParam = SqlConvertHelper.GetMySqlParams(spr);
+            List<MySqlParameter> listParam = GetMySqlParams(spr);
             MySqlConnection conn = GetConnection(false);
             conn.Open();
             MySqlCommand cmd = new MySqlCommand(cmdText, conn);
@@ -315,7 +333,7 @@ namespace YK.Platform.Core.SqlHelper
         /// <returns></returns>
        public string ExecuteScalar(CommandType cmdType, string cmdText, List<SqlParameter> spr)
        {
-           List<MySqlParameter> listParam = SqlConvertHelper.GetMySqlParams(spr);
+           List<MySqlParameter> listParam = GetMySqlParams(spr);
            using (MySqlConnection conn = GetConnection(false))
            {
                conn.Open();

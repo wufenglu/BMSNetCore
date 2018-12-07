@@ -8,6 +8,7 @@ using System.Text;
 using Oracle.DataAccess.Client;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using YK.Platform.Core.Model;
 
 namespace YK.Platform.Core.SqlHelper
 {
@@ -17,48 +18,13 @@ namespace YK.Platform.Core.SqlHelper
     public class SqlConvertHelper
     {
         /// <summary>
-        /// 获取mysql参数
-        /// </summary>
-        /// <param name="spr"></param>
-        /// <returns></returns>
-        public static List<MySqlParameter> GetMySqlParams(List<SqlParameter> spr) {
-            List<MySqlParameter> list = new List<MySqlParameter>();
-            if (spr != null)
-            {
-                foreach (var item in spr)
-                {
-                    list.Add(new MySqlParameter(item.ParameterName, item.Value));
-                }
-            }
-            return list;
-        }
-
-        /// <summary>
-        /// 获取oracle参数
-        /// </summary>
-        /// <param name="spr"></param>
-        /// <returns></returns>
-        public static List<OracleParameter> GetOracleParams(List<SqlParameter> spr)
-        {
-            List<OracleParameter> list = new List<OracleParameter>();
-            if (spr != null)
-            {
-                foreach (var item in spr)
-                {
-                    list.Add(new OracleParameter(item.ParameterName, item.Value));
-                }
-            }
-            return list;
-        }
-
-        /// <summary>
         /// 获取实例
         /// </summary>
         /// <returns></returns>
         public static ISqlHelper GetInstallSqlHelper(string orgCode=null, string connectionString=null)
         {
-            var connDic = new ConnectionHelper().GetConnectionDic(orgCode);
-            switch (connDic["provider"])
+            OrganizationEntity organizationEntity = new ConnectionHelper().GetConnectionDic(orgCode);
+            switch (organizationEntity.Provider)
             {
                 case "System.Data.SqlClient":
                     return new SqlHelper(orgCode, connectionString);

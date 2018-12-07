@@ -37,6 +37,24 @@ namespace YK.Platform.Core.SqlHelper
         }
 
         /// <summary>
+        /// 获取oracle参数
+        /// </summary>
+        /// <param name="spr"></param>
+        /// <returns></returns>
+        public static List<OracleParameter> GetOracleParams(List<SqlParameter> spr)
+        {
+            List<OracleParameter> list = new List<OracleParameter>();
+            if (spr != null)
+            {
+                foreach (var item in spr)
+                {
+                    list.Add(new OracleParameter(item.ParameterName, item.Value));
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
         /// 返回数据库连接对象
         /// </summary>
         /// <returns></returns>
@@ -67,7 +85,7 @@ namespace YK.Platform.Core.SqlHelper
         public int ExecuteNonQuery(CommandType commandType, string cmdText, List<SqlParameter> spr)
         {
             int i = 0;
-            List<OracleParameter> listParam = SqlConvertHelper.GetOracleParams(spr);
+            List<OracleParameter> listParam = GetOracleParams(spr);
             using (OracleConnection conn = GetConnection())
             {
                 conn.Open();
@@ -150,7 +168,7 @@ namespace YK.Platform.Core.SqlHelper
         public DataSet GetDataSet(CommandType cmdType, string cmdText, List<SqlParameter> spr)
         {
             DataSet ds = new DataSet();
-            List<OracleParameter> listParam = SqlConvertHelper.GetOracleParams(spr);
+            List<OracleParameter> listParam = GetOracleParams(spr);
             using (OracleConnection conn = GetConnection(false))
             {
                 conn.Open();
@@ -231,7 +249,7 @@ namespace YK.Platform.Core.SqlHelper
         /// <returns></returns>
         public IDataReader ExecuteReader(CommandType cmdType, string cmdText, List<SqlParameter> spr)
         {
-            List<OracleParameter> listParam = SqlConvertHelper.GetOracleParams(spr);
+            List<OracleParameter> listParam = GetOracleParams(spr);
             OracleConnection conn = GetConnection(false);
             conn.Open();
             OracleCommand cmd = new OracleCommand(cmdText, conn);
@@ -311,7 +329,7 @@ namespace YK.Platform.Core.SqlHelper
         /// <returns></returns>
         public string ExecuteScalar(CommandType cmdType, string cmdText, List<SqlParameter> spr)
         {
-            List<OracleParameter> listParam = SqlConvertHelper.GetOracleParams(spr);
+            List<OracleParameter> listParam = GetOracleParams(spr);
             using (OracleConnection conn = GetConnection(false))
             {
                 conn.Open();
