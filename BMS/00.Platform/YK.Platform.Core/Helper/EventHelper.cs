@@ -66,7 +66,7 @@ namespace YK.Platform.Core
         public List<Event> GetConfig() {
             List<Event> result = new List<Event>();
 
-            string fileUrl = Path.Combine(Directory.GetCurrentDirectory(),"/App_Data/Event.Config");
+            string fileUrl = Directory.GetCurrentDirectory() + @"\App_Data\Event.Config";
             XmlDocument xd = new XmlDocument();
             xd.Load(fileUrl);
 

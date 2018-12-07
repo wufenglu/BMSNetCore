@@ -1,0 +1,12 @@
+﻿using System;
+
+namespace #namespace
+{
+    /// <summary>
+    /// 生成代码类
+    /// </summary>
+    public class #class
+    {
+		#content
+    }
+}

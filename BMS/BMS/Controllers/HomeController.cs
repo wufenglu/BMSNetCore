@@ -8,6 +8,7 @@ using BMS.Models;
 using YK.Config.Model;
 using YK.Platform.Core;
 using YK.Platform.Core.Tools;
+using YK.Platform.Core.Helper;
 
 namespace BMS.Controllers
 {
@@ -21,8 +22,19 @@ namespace BMS.Controllers
         public IActionResult Index()
         {
             EntityReflectionDataBase refEntity = new EntityReflectionDataBase();
-            var list = refEntity.GetEntitys();
+            //var list = refEntity.GetEntitys();
+
+            User user = EntityFactory.New<User>();
+            user.UserName = "yank01";
+            Framework<User>.Instance().Insert(user);
+
             var c =  Framework<User>.Instance().Find(n => n.IsEnable == true);
+
+            User userEf = new User();
+            userEf.UserName = "yank02";
+            ConfigContext.User.Add(userEf);
+            ConfigContext.SaveChanges();
+
             int count = ConfigContext.Modules.Count();
             return View();
         }

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Organizations>
+  <Organization>
+    <name>默认库</name>
+    <provider>System.Data.SqlClient</provider>
+    <code>default</code>
+    <connectionstring>Server=.;database=YK_MK_NewDB;uid=sa;pwd=_1qaz7410;</connectionstring>
+    <state>0</state>
+    <slaves>
+      <slave>
+        <connectionstring>Server=.;database=YK_MK_NewDB_Slave;uid=sa;pwd=_1qaz7410;</connectionstring>
+        <proportion>80</proportion>
+        <state>0</state>
+      </slave>
+    </slaves>
+  </Organization>
+  <Organization>
+    <name>美吉克</name>
+    <provider>System.Data.SqlClient</provider>
+    <code>magical</code>
+    <connectionstring>Server=qds122605549.my3w.com;database=qds122605549_db;uid=qds122605549;pwd=yankun2009;</connectionstring>
+    <state>0</state>
+    <slaves>
+      <slave>
+        <connectionstring>Server=qds122605549.my3w.com;database=qds122605549_db;uid=qds122605549;pwd=yankun2009;</connectionstring>
+        <proportion>80</proportion>
+        <state>0</state>
+      </slave>
+    </slaves>
+  </Organization>
+</Organizations>

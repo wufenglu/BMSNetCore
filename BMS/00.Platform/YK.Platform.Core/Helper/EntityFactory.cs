@@ -5,6 +5,11 @@ using System.IO;
 using System.Reflection;
 using YK.Platform.Cache;
 using System.CodeDom.Compiler;
+using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
+using System.Runtime.Loader;
 
 namespace YK.Platform.Core.Helper
 {
@@ -58,14 +63,15 @@ namespace YK.Platform.Core.Helper
             //文件名为源类的命名空间+类名
             string fileName = (entityType.Namespace + "." + entityType.Name).Replace(".", "_");
             //代理类的全称
-            string loadClassFullName = "YK.Platform.Core.Proxy.GenerateClass." + fileName + "." + entityType.Name;
+            string namespaceName = "Proxy.GenerateClass." + entityType.Namespace.Replace(".", "_");
+            string loadClassFullName = namespaceName + "." + entityType.Name;
             object cacheValue = CachesHelper.Get(loadClassFullName);
             if (cacheValue != null)
             {
                 return (Tentity)System.Activator.CreateInstance(cacheValue.GetType());
             }
 
-            string generateCode = GenerateCode<Tentity>(fileName, loadClassFullName);
+            string generateCode = GenerateCode<Tentity>(fileName, namespaceName);
             result = GetTentity<Tentity>(generateCode, loadClassFullName);
             CachesHelper.Set(loadClassFullName, result);
 
@@ -77,9 +83,9 @@ namespace YK.Platform.Core.Helper
         /// </summary>
         /// <typeparam name="Tentity"></typeparam>
         /// <param name="fileName"></param>
-        /// <param name="loadClassFullName"></param>
+        /// <param name="namespaceName"></param>
         /// <returns></returns>
-        private static string GenerateCode<Tentity>(string fileName, string loadClassFullName) where Tentity : class, new()
+        private static string GenerateCode<Tentity>(string fileName,string namespaceName) where Tentity : class, new()
         {
             Type entityType = typeof(Tentity);
             string fullClassName = entityType.Namespace + "." + entityType.Name;
@@ -91,7 +97,7 @@ namespace YK.Platform.Core.Helper
 
             //替换模板
             string templateContent = GetTemplate();
-            templateContent = templateContent.Replace("#namespace", fileName);
+            templateContent = templateContent.Replace("#namespace", namespaceName);
             templateContent = templateContent.Replace("#class", entityType.Name + ":" + fullClassName);
 
             //重写属性
@@ -146,49 +152,65 @@ namespace YK.Platform.Core.Helper
         {
             Tentity entity = new Tentity();
 
-            // bing http://www.cnblogs.com/dralee/p/5383395.html
-            // 编译器
-            CodeDomProvider cdp = CodeDomProvider.CreateProvider("C#");
+            //缓存程序集依赖
+            var references = new List<MetadataReference>();
+            var refAsmFiles = new List<string>();
+            var refAssemblyList = entity.GetType().Assembly.GetReferencedAssemblies();
 
-            // 编译器参数
-            CompilerParameters cps = new CompilerParameters();
+            //系统依赖
+            var sysRefLocation = typeof(Enumerable).GetTypeInfo().Assembly.Location;
+            refAsmFiles.Add(sysRefLocation);
 
-            AssemblyName[] assemblyNames = entity.GetType().Assembly.GetReferencedAssemblies();
-            foreach (AssemblyName name in assemblyNames)
-            {
-                if (name.Name.ToLower().StartsWith("system") || name.Name.ToLower() == "mscorlib")
-                {
-                    cps.ReferencedAssemblies.Add(name.Name + ".dll");
-                }
-                else
-                {
-                    cps.ReferencedAssemblies.Add(Directory.GetCurrentDirectory() + "\\bin\\" + name.Name + ".dll");
-                }
-            }
-            cps.ReferencedAssemblies.Add(Directory.GetCurrentDirectory() + "\\bin\\" + entity.GetType().Assembly.GetName().Name + ".dll");
-            cps.GenerateExecutable = false;
-            cps.GenerateInMemory = true;
+            //refAsmFiles原本缓存的程序集依赖
+            refAsmFiles.Add(typeof(object).GetTypeInfo().Assembly.Location);
+            refAsmFiles.AddRange(refAssemblyList.Select(t => Assembly.Load(t).Location).Distinct().ToList());
 
-            // 编译结果
-            CompilerResults cr = cdp.CompileAssemblyFromSource(cps, code);
-            if (cr.Errors.HasErrors)
+            //传统.NetFramework 需要添加mscorlib.dll
+            var coreDir = Directory.GetParent(sysRefLocation);
+            var mscorlibFile = coreDir.FullName + Path.DirectorySeparatorChar + "mscorlib.dll";
+            if (File.Exists(mscorlibFile))
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("编译错误：\r\n");
-                foreach (CompilerError err in cr.Errors)
-                {
-                    sb.Append(err.ErrorText);
-                    sb.Append("\r\n");
-                }
-                throw new Exception(sb.ToString());
-            }
-            else
-            {
-                Assembly asm = cr.CompiledAssembly;
-                entity = (Tentity)asm.CreateInstance(loadClassFullName);
+                references.Add(MetadataReference.CreateFromFile(mscorlibFile));
             }
 
-            return entity;
+            var apiAsms = refAsmFiles.Select(t => MetadataReference.CreateFromFile(t)).ToList();
+            references.AddRange(apiAsms);
+
+            //当前程序集依赖
+            var thisAssembly = Assembly.GetEntryAssembly();
+            if (thisAssembly != null)
+            {
+                var referencedAssemblies = thisAssembly.GetReferencedAssemblies();
+                foreach (var referencedAssembly in referencedAssemblies)
+                {
+                    var loadedAssembly = Assembly.Load(referencedAssembly);
+                    references.Add(MetadataReference.CreateFromFile(loadedAssembly.Location));
+                }
+            }
+
+            var tree = SyntaxFactory.ParseSyntaxTree(code);
+            var compilation = CSharpCompilation.Create(loadClassFullName)
+              .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+              .AddReferences(references)
+              .AddSyntaxTrees(tree);
+
+            //定义编译后文件名
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Proxy");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            var apiRemoteProxyDllFile = Path.Combine(path, loadClassFullName + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".dll");
+
+            //执行编译
+            EmitResult compilationResult = compilation.Emit(apiRemoteProxyDllFile);
+            if (compilationResult.Success)
+            {
+                Assembly apiRemoteAsm = AssemblyLoadContext.Default.LoadFromAssemblyPath(apiRemoteProxyDllFile);
+                return (Tentity)apiRemoteAsm.CreateInstance(loadClassFullName);
+            }
+            return null;
         }
     }
 }

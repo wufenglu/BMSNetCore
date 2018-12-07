@@ -16,7 +16,8 @@ namespace YK.Config.Model
         ///编号
         /// </summary>
         [Key]
-        public virtual string ID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public virtual int ID { get; set; }
         /// <summary> 
         ///用户名
         /// </summary>

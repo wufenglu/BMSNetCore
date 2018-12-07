@@ -4,7 +4,8 @@ using System.Linq;
 using System.ComponentModel;
 using System.Reflection;
 using YK.Platform.Core.Model;
-using YK.Platform.Unity.Attributes;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace YK.Platform.Core
 {
@@ -96,16 +97,22 @@ namespace YK.Platform.Core
                 entity.isDbGenerated = false;
                 Type type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                 entity.typeName = type.FullName;
-                object[] CustomAttributesArr = prop.GetCustomAttributes(typeof(ColumnAttribute), false);
-                if (CustomAttributesArr.Count() > 0)
+
+                ColumnAttribute columnAttribute = prop.GetCustomAttribute<ColumnAttribute>();
+                if (columnAttribute != null) {
+                    entity.fieldName = columnAttribute.Name;
+                }
+
+                KeyAttribute keyAttribute = prop.GetCustomAttribute<KeyAttribute>();
+                if (keyAttribute != null)
                 {
-                    foreach (var obj in CustomAttributesArr)
-                    {
-                        ColumnAttribute attr = obj as ColumnAttribute;
-                        entity.fieldName = attr.Name == null ? prop.Name : attr.Name;
-                        entity.isPrimaryKey = attr.IsPrimaryKey;
-                        entity.isDbGenerated = attr.IsDbGenerated;
-                    }
+                    entity.isPrimaryKey = true;
+                }
+
+                DatabaseGeneratedAttribute databaseGeneratedAttribute = prop.GetCustomAttribute<DatabaseGeneratedAttribute>();
+                if (databaseGeneratedAttribute != null)
+                {
+                    entity.isDbGenerated = databaseGeneratedAttribute.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity ? true : false;
                 }
                 list.Add(entity);
             }
