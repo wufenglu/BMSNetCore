@@ -9,13 +9,15 @@ using YK.Config.Model;
 using YK.Platform.Core;
 using YK.Platform.Core.Tools;
 using YK.Platform.Core.Helper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BMS.Controllers
 {
     public class HomeController : Controller
     {
         ConfigContext ConfigContext = null;
-        public HomeController(ConfigContext context) {
+        public HomeController(ConfigContext context, IConfiguration configuration, DbContextOptions<ConfigContext> options) {
             ConfigContext = context;
         }
 
@@ -32,6 +34,8 @@ namespace BMS.Controllers
 
             User userEf = new User();
             userEf.UserName = "yank02";
+
+            ConfigContext = new ConfigContext();
             ConfigContext.User.Add(userEf);
             ConfigContext.SaveChanges();
 

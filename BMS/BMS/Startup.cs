@@ -30,8 +30,9 @@ namespace BMS
 
             //services.AddSingleton<IConfiguration>(Configuration);
 
-            services.AddDbContext<ConfigContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ConfigContext>();
+            //services.AddDbContext<ConfigContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

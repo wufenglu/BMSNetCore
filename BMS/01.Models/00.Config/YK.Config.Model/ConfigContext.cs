@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
+using System.IO;
 
 namespace YK.Config.Model
 {
@@ -14,6 +16,8 @@ namespace YK.Config.Model
         /// </summary>
         public IConfiguration Configuration = null;
 
+        public ConfigContext() { }
+
         public ConfigContext(IConfiguration configuration,DbContextOptions<ConfigContext> options)
             : base(options)
         {
@@ -26,7 +30,11 @@ namespace YK.Config.Model
         /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .Add(new JsonConfigurationSource { Path = "appsettings.json", Optional = false, ReloadOnChange = true })
+                .Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
 
         /// <summary>
