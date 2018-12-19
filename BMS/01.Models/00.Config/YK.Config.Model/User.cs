@@ -33,6 +33,6 @@ namespace YK.Config.Model
         /// <summary> 
         ///状态
         /// </summary>
-        public virtual bool IsEnable { get; set; }
+        public virtual bool? IsEnable { get; set; }
     }
 }
