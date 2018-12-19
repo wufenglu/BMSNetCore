@@ -14,4 +14,10 @@
     <ProjectReference Include="..\01.Models\00.Config\YK.Config.Model\YK.Config.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Home\Index - 复制.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

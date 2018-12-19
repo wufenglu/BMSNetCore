@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 using YK.Config.Model;
 
 namespace BMS
@@ -54,11 +56,24 @@ namespace BMS
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseStaticFiles(new StaticFileOptions()
+
+            {
+                FileProvider = new PhysicalFileProvider(
+
+                Path.Combine(Directory.GetCurrentDirectory(), @"static")),
+
+                RequestPath = new PathString("/static")
+
             });
         }
     }

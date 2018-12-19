@@ -27,14 +27,14 @@ public override String Password
 get { if (ChanageProperty.ContainsKey("Password") == false) { return default(String); } else { return (String)ChanageProperty["Password"]; } } 
 set { ChanageProperty.Add("Password",value); } 
 }
-public override Boolean IsEnable 
+public override Nullable<Boolean> IsEnable 
 {
-get { if (ChanageProperty.ContainsKey("IsEnable") == false) { return default(Boolean); } else { return (Boolean)ChanageProperty["IsEnable"]; } } 
+get { if (ChanageProperty.ContainsKey("IsEnable") == false) { return default(Nullable<Boolean>); } else { return (Nullable<Boolean>)ChanageProperty["IsEnable"]; } } 
 set { ChanageProperty.Add("IsEnable",value); } 
 }
-public override Int32 CreaterID 
+public override Nullable<Int32> CreaterID 
 {
-get { if (ChanageProperty.ContainsKey("CreaterID") == false) { return default(Int32); } else { return (Int32)ChanageProperty["CreaterID"]; } } 
+get { if (ChanageProperty.ContainsKey("CreaterID") == false) { return default(Nullable<Int32>); } else { return (Nullable<Int32>)ChanageProperty["CreaterID"]; } } 
 set { ChanageProperty.Add("CreaterID",value); } 
 }
 public override String Creater 
@@ -47,9 +47,9 @@ public override Nullable<DateTime> CreatedOn
 get { if (ChanageProperty.ContainsKey("CreatedOn") == false) { return default(Nullable<DateTime>); } else { return (Nullable<DateTime>)ChanageProperty["CreatedOn"]; } } 
 set { ChanageProperty.Add("CreatedOn",value); } 
 }
-public override Int32 ModifierID 
+public override Nullable<Int32> ModifierID 
 {
-get { if (ChanageProperty.ContainsKey("ModifierID") == false) { return default(Int32); } else { return (Int32)ChanageProperty["ModifierID"]; } } 
+get { if (ChanageProperty.ContainsKey("ModifierID") == false) { return default(Nullable<Int32>); } else { return (Nullable<Int32>)ChanageProperty["ModifierID"]; } } 
 set { ChanageProperty.Add("ModifierID",value); } 
 }
 public override String Modifier 
