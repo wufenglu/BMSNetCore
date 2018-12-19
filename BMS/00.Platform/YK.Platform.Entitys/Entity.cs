@@ -16,7 +16,7 @@ namespace YK.Platform.Entitys
         /// <summary> 
         ///创建人ID
         /// </summary>
-        public virtual int CreaterID { get; set; }
+        public virtual int? CreaterID { get; set; }
         /// <summary> 
         ///创建人
         /// </summary>
@@ -28,7 +28,7 @@ namespace YK.Platform.Entitys
         /// <summary> 
         ///修改人ID
         /// </summary>
-        public virtual int ModifierID { get; set; }
+        public virtual int? ModifierID { get; set; }
         /// <summary> 
         ///修改人
         /// </summary>
