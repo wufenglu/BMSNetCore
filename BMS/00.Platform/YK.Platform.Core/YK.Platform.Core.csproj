@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\YK.Platform.Cache\YK.Platform.Cache.csproj" />
     <ProjectReference Include="..\YK.Platform.Entitys\YK.Platform.Entitys.csproj" />
-    <ProjectReference Include="..\YK.Platform.Unity\YK.Platform.Unity.csproj" />
+    <ProjectReference Include="..\YK.Platform.Unity\YK.Platform.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

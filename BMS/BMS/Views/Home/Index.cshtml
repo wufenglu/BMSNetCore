@@ -1,15 +1,214 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset=utf-8>
-    <meta name=viewport content="width=device-width,initial-scale=1">
-    <title>backend</title>
-    <link href=/static/css/app.04b5313ce7a3a08f03cef32055e1060f.css rel=stylesheet>
-</head>
-<body>
-    <div id=app></div>
-    <script type=text/javascript src=/static/js/manifest.2ae2e69a05c33dfc65f8.js></script>
-    <script type=text/javascript src=/static/js/vendor.61340a690bb1939b7aa5.js></script>
-    <script type=text/javascript src=/static/js/app.902c87c207c5727ad70f.js></script>
-</body>
-</html>
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    table {
+        border: 1px solid gray;
+        width: 100%;
+    }
+
+    td {
+        border: 1px solid gray;
+    }
+
+    .active {
+        background-color: #55B8FF;
+        color: white;
+    }
+
+</style>
+
+<div id="app">
+    <button v-on:click="btnClick" v-bind:id="btnid">{{btnvalue}}</button><br />
+    <span>{{xss}}</span><br />
+    <span v-html="html"></span><br />
+    <span :id="btnid">v-bind简写:id</span><br />
+    <span @@click="btnid">v-on简写@@</span><br />
+    合同数量：{{computedAttr}}<br />
+    <span v-if="true">
+        true
+    </span>
+    <span v-else>
+        false
+    </span>
+    <table>
+        <thead>
+            <tr>
+                <td>合同名称</td>
+                <td>合同编码</td>
+            </tr>
+        </thead>
+        <tr v-for="contract in contracts">
+            <td>{{contract.name}}</td>
+            <td>{{contract.code}}</td>
+        </tr>
+    </table>
+
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+
+    <products v-bind:products="products" v-on:event-notice="onEventNotice"></products>
+
+    <!-- 组件会在 `currentTabComponent` 改变时改变，动态切换组件 -->
+    <component v-bind:is="currentTabComponent" v-on:event-notice="currentTabComponent=$event"></component>
+
+    <navcomp v-bind:tabs="products" v-bind:contents="products" v-on:event-notice="onEventNotice"></navcomp>
+
+
+    <!--
+        组件的 class，建议采用 “业务单元编码-组件名称” 的方式命名
+        如：slxt-mycomponent
+    -->
+    <div class="clxt-guidecomponent">
+        <!--
+            组件模板请参考vue2.0官方文档
+            https://cn.vuejs.org/v2/guide/syntax.html
+        -->
+        <div class="tabs">
+            <div v-for="(tab,key) in tabs" @@click="tabClick(key)">
+                <span>{{tab.name}}</span>
+            </div>
+        </div>
+        <div class="contents">
+            <div  v-bind:class="[currentIndex==0?'active':'']">
+                AAAAAAAAAAA
+            </div>
+            <div  v-bind:class="[currentIndex==1?'active':'']">
+                BBBBBBBBBBBBBBB
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    //import product from '/Component/products';
+
+    //export default {
+    //    components: {
+    //        product
+    //    },
+    //    // ...
+    //}
+
+    Vue.component('button-counter', {
+        data: function () {
+            return {
+                count: 0
+            }
+        },
+        template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+    })
+
+    Vue.component('products', {
+        props: ['products'],
+        template: '<table><tr v-for="product in products"><td>{{product.name}}</td><td>{{product.code}}</td><td><button v-on:click="$emit(\'event-notice\',\'你好\')">调用组件父级含税</button></td></tr></table>'
+    })
+
+    Vue.component('tab1', {
+        template: '<button v-on:click="$emit(\'event-notice\',\'tab2\')">显示按钮tab2</button>'
+    })
+
+    Vue.component('tab2', {
+        template: '<button v-on:click="$emit(\'event-notice\',\'tab1\')">显示按钮tab1</button>'
+    })
+
+
+    var tabComp = {
+        props: ['tabs'],
+        template: '<table><tr v-for="tab in tabs"><td>{{tab.name}}</td><td><button v-on:click="$emit(\'event-notice\',\'你好\')">调用组件父级含税</button></td></tr></table>'
+    };
+
+    var contentComp = {
+        props: ['contents'],
+        template: '<table><tr v-for="content in contents"><td>{{content.name}}</td><td><button v-on:click="$emit(\'event-notice\',\'你好\')">调用组件父级含税</button></td></tr></table>'
+    };
+
+    Vue.component('navcomp', {
+        props: ['tabs', 'contents'],
+        components: {
+            'tabcomp': tabComp,
+            'contentcomp': contentComp
+        },
+        template: '<div><tabcomp v-bind:tabs="tabs"></tabcomp><contentcomp v-bind:contents="contents"></contentcomp></div>'
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            btnid: "btnid",
+            btnvalue: "清空合同",
+            xss: "<script type='text/javascript'>xss攻击无法执行<\/script>",
+            html: "<span style='color:red;'>html</span>",
+            contracts: [
+                { name: "合同1", code: "编码1" },
+                { name: "合同2", code: "编码2" }
+            ],
+            products: [
+                { name: "产品1", code: "编码1" },
+                { name: "产品2", code: "编码2" },
+                { name: "产品3", code: "编码3" }
+            ],
+            currentTabComponent: "tab1",
+            currentIndex: 0
+        },
+        methods: {
+            btnClick: function () {
+                this.contracts = null;
+                alert('hello world...');
+            },
+            onEventNotice: function (msg) {
+                alert(msg);
+            }
+        },
+        computed: {
+            computedAttr: function () {
+                return this.contracts == null ? 0 : this.contracts.length;
+            }
+        },
+        watch: {
+            contracts: function () {
+                alert("监听了contracts");
+            }
+        },
+        created: function () {
+            alert("Vue实例化后调用");
+        }
+    })
+
+    /**
+* 业务组件代码块（具体实现参考vue2.0开发文档）
+* 说明：组件内部支持 $util,$dialog,$_ 公开对象访问
+* 注意：以下对象禁止在组件内部使用 
+* window,document,jQuery,$,JSON,localStorage,sessionStorage,open,opener,self,top
+*/
+    module.exports = {
+        // 组件属性
+        props: {
+
+        },
+        // 组件状态
+        data: function () {
+            return {
+                tabs: [
+                    { name: "材料基本信息" },
+                    { name: "适用区域" }
+                ],
+                currentIndex: 0
+            }
+        },
+        // 计算属性
+        computed: {
+
+        },
+        // 方法
+        methods: {
+            tabClick: function (index) {
+                this.currentIndex = index;
+            }
+        }
+    }
+
+</script>

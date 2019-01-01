@@ -162,7 +162,7 @@ namespace YK.Platform.Core
         /// <param name="orderBy">排序</param>
         /// <param name="recordCount">数据总条数</param>        
         /// <returns></returns>
-        List<TEntity> Search(int pageSize, int pageIndex, string selectFields, System.Linq.Expressions.Expression<Func<TEntity, bool>> express, string orderBy, ref int recordCount);
+        List<TEntity> Find(int pageSize, int pageIndex, string selectFields, System.Linq.Expressions.Expression<Func<TEntity, bool>> express, string orderBy, ref int recordCount);
 
         /// <summary>
         /// 不分页查询,基础方法
@@ -172,7 +172,7 @@ namespace YK.Platform.Core
         /// <param name="selectFields">查询字段</param>        
         /// <param name="orderBy">排序,为空则不排序</param>
         /// <returns></returns>
-        List<TEntity> Search(System.Linq.Expressions.Expression<Func<TEntity, bool>> express, int? count = null, string selectFields = null, string orderBy = null);
+        List<TEntity> Find(System.Linq.Expressions.Expression<Func<TEntity, bool>> express, int? count = null, string selectFields = null, string orderBy = null);
 
 
         /// <summary>

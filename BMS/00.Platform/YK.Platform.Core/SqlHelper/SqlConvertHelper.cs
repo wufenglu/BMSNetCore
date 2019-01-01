@@ -21,7 +21,7 @@ namespace YK.Platform.Core.SqlHelper
         /// 获取实例
         /// </summary>
         /// <returns></returns>
-        public static ISqlHelper GetInstallSqlHelper(string orgCode=null, string connectionString=null)
+        public static ISqlHelper GetInstallSqlHelper(string orgCode = null, string connectionString = null)
         {
             OrganizationEntity organizationEntity = new ConnectionHelper().GetConnectionDic(orgCode);
             switch (organizationEntity.Provider)
@@ -37,6 +37,6 @@ namespace YK.Platform.Core.SqlHelper
                     break;
             }
             return new SqlHelper();
-        }     
+        } 
     }
 }

@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>YK.Platform.Utility</AssemblyName>
+    <RootNamespace>YK.Platform.Utility</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
