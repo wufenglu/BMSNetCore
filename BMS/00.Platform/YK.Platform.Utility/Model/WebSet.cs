@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace YK.Platform.Unity.Model
+namespace YK.Platform.Utility.Model
 {
     /// <summary>
     /// 站点信息设置

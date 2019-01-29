@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Xml;
 using YK.Platform.Cache;
 using YK.Platform.Entitys;
-using YK.Platform.Unity.Extensions;
+using YK.Platform.Utility.Extensions;
 using Newtonsoft.Json;
 using YK.Platform.Core.Model;
 

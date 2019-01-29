@@ -6,7 +6,7 @@ using System.Reflection;
 
 using Newtonsoft.Json;
 
-namespace YK.Platform.Unity.Extensions
+namespace YK.Platform.Utility.Extensions
 {
     /// <summary>
     /// 扩展方法

@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using System.IO;
 
-namespace YK.Platform.Unity
+namespace YK.Platform.Utility
 {
 
     /// <summary>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace YK.Platform.Unity
+namespace YK.Platform.Utility
 {
     public class HttpWebRequestHelper
     {

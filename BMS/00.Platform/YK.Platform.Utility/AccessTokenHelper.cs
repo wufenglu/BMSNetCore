@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace YK.Platform.Unity
+namespace YK.Platform.Utility
 {
     /// <summary>
     /// 令牌生成器

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
-using YK.Platform.Unity.Extensions;
+using YK.Platform.Utility.Extensions;
 
-namespace YK.Platform.Unity.Email
+namespace YK.Platform.Utility.Email
 {
     /// <summary>
     ///EmailHelper 发送邮件类

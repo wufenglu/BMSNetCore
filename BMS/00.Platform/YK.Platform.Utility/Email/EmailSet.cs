@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace YK.Platform.Unity.Model
+namespace YK.Platform.Utility.Email
 {
     /// <summary>
     /// 邮箱信息设置

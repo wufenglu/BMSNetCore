@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using YK.Platform.Core.SqlHelper;
-using YK.Platform.Unity.Extensions;
+using YK.Platform.Utility.Extensions;
 
 namespace YK.Platform.Core
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace YK.Platform.Unity
+namespace YK.Platform.Utility
 {
     public class Result
     {

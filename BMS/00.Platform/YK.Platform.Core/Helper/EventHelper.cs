@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using YK.Platform.Core.Model;
-using YK.Platform.Unity;
+using YK.Platform.Utility;
 
 namespace YK.Platform.Core
 {

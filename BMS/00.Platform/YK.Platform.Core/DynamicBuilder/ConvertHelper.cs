@@ -4,7 +4,7 @@ using System.Data;
 using System.Reflection;
 using System.Reflection.Emit;
 
-using YK.Platform.Unity.Extensions;
+using YK.Platform.Utility.Extensions;
 
 namespace YK.Platform.Core
 {
