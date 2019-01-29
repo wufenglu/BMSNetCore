@@ -47,6 +47,25 @@ namespace YK.Platform.Core
             List<ContainerEntity> list = ContainerList.Where(w => w.InterfaceAssemblyFullName == interfaceType.FullName && w.Alias == alias).ToList();
             return Assembly.Load(list.First().ServiceAssembly).CreateInstance(list.First().ServiceAssemblyFullName) as Interface;
         }
+
+        /// <summary>
+        /// 初始化服务：构建属性注入
+        /// </summary>
+        public static AppService InitService<AppService>()
+        {
+            AppService service = System.Activator.CreateInstance<AppService>();
+            foreach (var prop in service.GetType().GetProperties())
+            {
+                if (prop.PropertyType.IsInterface)
+                {
+                    string interfactFullName = prop.PropertyType.FullName;
+                    List<ContainerEntity> list = ContainerList.Where(w => w.InterfaceAssemblyFullName == interfactFullName).ToList();
+                    object appService = Assembly.Load(list.First().ServiceAssembly).CreateInstance(list.First().ServiceAssemblyFullName);
+                    prop.SetValue(service, appService);
+                }
+            }
+            return service;
+        }
     }
 
     /// <summary>
