@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YK.Platform.Cache", "00.Pla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YK.Platform.Utility", "00.Platform\YK.Platform.Utility\YK.Platform.Utility.csproj", "{9462A03F-C253-42D4-B489-23AE433D3FDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{DCE46D42-A6A7-447D-AC04-673949B7028D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{9462A03F-C253-42D4-B489-23AE433D3FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9462A03F-C253-42D4-B489-23AE433D3FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9462A03F-C253-42D4-B489-23AE433D3FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE46D42-A6A7-447D-AC04-673949B7028D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE46D42-A6A7-447D-AC04-673949B7028D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE46D42-A6A7-447D-AC04-673949B7028D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE46D42-A6A7-447D-AC04-673949B7028D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

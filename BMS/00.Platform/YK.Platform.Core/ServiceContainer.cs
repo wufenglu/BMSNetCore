@@ -21,7 +21,7 @@ namespace YK.Platform.Core
         /// <typeparam name="Service"></typeparam>
         /// <typeparam name="Interface"></typeparam>
         /// <param name="alias"></param>
-        public static void Register<Service, Interface>(string alias = null) where Interface : class
+        public static void Register<Interface, Service>(string alias = null) where Service : class
         {
             Type serviceType = typeof(Service);
             Type interfaceType = typeof(Interface);
@@ -58,10 +58,23 @@ namespace YK.Platform.Core
             {
                 if (prop.PropertyType.IsInterface)
                 {
+                    //实例化接口的实现类
                     string interfactFullName = prop.PropertyType.FullName;
                     List<ContainerEntity> list = ContainerList.Where(w => w.InterfaceAssemblyFullName == interfactFullName).ToList();
                     object appService = Assembly.Load(list.First().ServiceAssembly).CreateInstance(list.First().ServiceAssemblyFullName);
-                    prop.SetValue(service, appService);
+
+                    //初始化属性注入
+                    Type serviceContainerType = typeof(ServiceContainer);
+                    MethodInfo methodInfo = serviceContainerType.GetMethod("InitService");
+
+                    //设置泛型方法的泛型
+                    methodInfo = methodInfo.MakeGenericMethod(appService.GetType());
+
+                    //执行
+                    var installObject = methodInfo.Invoke(serviceContainerType, null);
+
+                    //设置返回值
+                    prop.SetValue(service, installObject);
                 }
             }
             return service;
