@@ -22,11 +22,13 @@ namespace YK.Platform.Core.Model
         /// <param name="fieldName">字段名</param>
         /// <param name="condition">条件</param>
         /// <param name="value">值</param>
-        public Expression(string fieldName, ConditionEnum condition,object value)
+        /// <param name="join"></param>
+        public Expression(string fieldName, ConditionEnum condition, object value, JoinEnum join = JoinEnum.And)
         {
             FieldName = fieldName;
             Condition = condition;
             Value = value.ToString();
+            Join = join;
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace YK.Platform.Core.Model
         /// </summary>
         /// <param name="join">连接符: (、)、and 、 or</param>
         /// <param name="value">值</param>
-        public Expression(string join)
+        public Expression(JoinEnum join)
         {
             Join = join;
         }
@@ -57,6 +59,6 @@ namespace YK.Platform.Core.Model
         /// <summary>
         /// 连接符: (、)、and 、 or
         /// </summary>
-        public string Join { get; set; }
+        public JoinEnum Join { get; set; }
     }
 }
