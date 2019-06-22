@@ -32,12 +32,17 @@ namespace BMS.Controllers
 
         public IActionResult Index()
         {
+            var configContext = new ConfigContext();
+            List<User> users = configContext.User.ToList().Take(20).ToList();
+
             EntityReflectionDataBase refEntity = new EntityReflectionDataBase();
             //var list = refEntity.GetEntitys();
 
             User user = EntityFactory.New<User>();
             user.UserName = "yank01";
             Framework<User>.Instance().Insert(user);
+
+            Framework<User>.Instance().Get(1);
 
             var c = Framework<User>.Instance().Find(n => n.IsEnable == true);
 
