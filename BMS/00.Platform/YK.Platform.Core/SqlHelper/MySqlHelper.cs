@@ -81,44 +81,45 @@ namespace YK.Platform.Core.SqlHelper
         /// <param name="cmdText"></param>
         /// <param name="spr"></param>
         /// <returns></returns>
-       public int ExecuteNonQuery(CommandType commandType,string cmdText,List<SqlParameter> spr)
-       {
-           int i = 0;
+        public int ExecuteNonQuery(CommandType commandType, string cmdText, List<SqlParameter> spr)
+        {
+            int i = 0;
             List<MySqlParameter> listParam = GetMySqlParams(spr);
             using (MySqlConnection conn = GetConnection())
-           {
-               conn.Open();
-               MySqlCommand cmd = new MySqlCommand(cmdText, conn);
-               //事物
-               MySqlTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);               
-               try
-               {
-                   cmd.Parameters.Clear();
-                   cmd.CommandType = commandType;
-                   cmd.CommandTimeout = 300;
-                   cmd.Transaction = trans;
-                   if (spr != null)
-                   {
-                       foreach (MySqlParameter s in listParam)
-                       {
-                           cmd.Parameters.Add(s);
-                       };
-                   }
-                   i = cmd.ExecuteNonQuery();
-                   trans.Commit();
-               }
-               catch (Exception ex)
-               {
-                   trans.Rollback();
-               }
-               finally
-               {                   
-                   conn.Close();
-                   cmd.Parameters.Clear();
-               }
-               return i;    
-           }                
-       }
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(cmdText, conn);
+                //事物
+                MySqlTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+                try
+                {
+                    cmd.Parameters.Clear();
+                    cmd.CommandType = commandType;
+                    cmd.CommandTimeout = 300;
+                    cmd.Transaction = trans;
+                    if (spr != null)
+                    {
+                        foreach (MySqlParameter s in listParam)
+                        {
+                            cmd.Parameters.Add(s);
+                        };
+                    }
+                    i = cmd.ExecuteNonQuery();
+                    trans.Commit();
+                    return i;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw ex;
+                }
+                finally
+                {
+                    conn.Close();
+                    cmd.Parameters.Clear();
+                }                
+            }
+        }
 
         /// <summary>
         /// 带参数的存储过程
@@ -189,16 +190,17 @@ namespace YK.Platform.Core.SqlHelper
                         }
                     }
                     oda.Fill(ds);
+                    return ds;
                 }
                 catch (Exception ex)
                 {
+                    throw ex;
                 }
                 finally
                 {
                     oda.SelectCommand.Parameters.Clear();
                     conn.Close();
-                }
-                return ds;
+                }                
             }
         }
 
@@ -273,12 +275,12 @@ namespace YK.Platform.Core.SqlHelper
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             finally
             {
                 cmd.Parameters.Clear();
             }
-            return null;
         }
 
         /// <summary>
@@ -349,20 +351,23 @@ namespace YK.Platform.Core.SqlHelper
                            cmd.Parameters.Add(s);
                        }
                    }
-                   if (cmd.ExecuteScalar() != null)
-                   {
-                       return cmd.ExecuteScalar().ToString();
-                   }
+                    if (cmd.ExecuteScalar() != null)
+                    {
+                        return cmd.ExecuteScalar().ToString();
+                    }
+                    else {
+                        return null;
+                    }
                }
                catch (Exception ex)
                {
-               }
+                    throw ex;
+                }
                finally
                {
                    cmd.Parameters.Clear();
                    conn.Close();
-               }
-               return null;
+               }               
            }
        }
 

@@ -91,7 +91,8 @@ namespace YK.Platform.Core.SqlHelper
                catch(Exception ex)
                {
                    trans.Rollback();
-               }
+                    throw ex;
+                }
                finally
                {                   
                    conn.Close();
@@ -172,7 +173,8 @@ namespace YK.Platform.Core.SqlHelper
                }
                catch (Exception ex)
                {
-               }
+                    throw ex;
+                }
                finally
                {
                    oda.SelectCommand.Parameters.Clear();
@@ -252,12 +254,12 @@ namespace YK.Platform.Core.SqlHelper
            }
            catch (Exception ex)
            {
-           }
+                throw ex;
+            }
            finally
            {
                cmd.Parameters.Clear();
            }
-           return null;
        }
 
         /// <summary>
@@ -302,7 +304,7 @@ namespace YK.Platform.Core.SqlHelper
        {
            return ExecuteReader(cmdText, null);
        }
-       
+
         /// <summary>
         /// 返回第一行第一列的值
         /// </summary>
@@ -310,39 +312,43 @@ namespace YK.Platform.Core.SqlHelper
         /// <param name="cmdText"></param>
         /// <param name="spr"></param>
         /// <returns></returns>
-       public string ExecuteScalar(CommandType cmdType, string cmdText, List<SqlParameter> spr)
-       {
-           using (SqlConnection conn = GetConnection(false))
-           {
-               conn.Open();
-               SqlCommand cmd = new SqlCommand(cmdText, conn);
-               try
-               {
-                   cmd.CommandType = cmdType;
-                   cmd.CommandTimeout = 300;
-                   if (spr != null)
-                   {
-                       foreach (SqlParameter s in spr)
-                       {
-                           cmd.Parameters.Add(s);
-                       }
-                   }
-                   if (cmd.ExecuteScalar() != null)
-                   {
-                       return cmd.ExecuteScalar().ToString();
-                   }
-               }
-               catch (Exception ex)
-               {
-               }
-               finally
-               {
-                   cmd.Parameters.Clear();
-                   conn.Close();
-               }
-               return null;
-           }
-       }
+        public string ExecuteScalar(CommandType cmdType, string cmdText, List<SqlParameter> spr)
+        {
+            using (SqlConnection conn = GetConnection(false))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                try
+                {
+                    cmd.CommandType = cmdType;
+                    cmd.CommandTimeout = 300;
+                    if (spr != null)
+                    {
+                        foreach (SqlParameter s in spr)
+                        {
+                            cmd.Parameters.Add(s);
+                        }
+                    }
+                    if (cmd.ExecuteScalar() != null)
+                    {
+                        return cmd.ExecuteScalar().ToString();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    cmd.Parameters.Clear();
+                    conn.Close();
+                }
+            }
+        }
 
         /// <summary>
         /// 带参数的存储过程
@@ -433,10 +439,12 @@ namespace YK.Platform.Core.SqlHelper
                }
                catch (Exception ex)
                {
-                   if (trans != null)
-                       trans.Rollback();                   
-               }
-               return false;
+                    if (trans != null)
+                    {
+                        trans.Rollback();
+                    }
+                    throw ex;
+                }
            }
        }
     }

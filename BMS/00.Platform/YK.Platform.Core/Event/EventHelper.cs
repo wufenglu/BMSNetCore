@@ -5,14 +5,14 @@ using System.Xml;
 using YK.Platform.Core.Model;
 using YK.Platform.Utility;
 
-namespace YK.Platform.Core
+namespace YK.Platform.Core.Event
 {
     /// <summary>
     /// 事件
     /// </summary>
     public class EventHelper
     {
-        public List<Event> eventEntitys;
+        public List<YK.Platform.Core.Model.Event> eventEntitys;
 
         /// <summary>
         ///  定义一个静态变量来保存类的实例
@@ -28,7 +28,12 @@ namespace YK.Platform.Core
         /// 实例化
         /// </summary>
         public static EventHelper Instance {
-            get {
+            get
+            {
+                if (eventHelper != null)
+                {
+                    return eventHelper;
+                }
                 lock (locker)
                 {
                     if (eventHelper == null)
@@ -48,7 +53,7 @@ namespace YK.Platform.Core
         /// <param name="data"></param>
         public void Execute(string key, object data)
         {
-            Event eventEntity = eventEntitys.Where(w => w.Key == key).FirstOrDefault();
+            YK.Platform.Core.Model.Event eventEntity = eventEntitys.Where(w => w.Key == key).FirstOrDefault();
             if (eventEntity != null)
             {
                 foreach (var item in eventEntity.Subscribers)
@@ -63,8 +68,8 @@ namespace YK.Platform.Core
         /// 获取配置
         /// </summary>
         /// <returns></returns>
-        public List<Event> GetConfig() {
-            List<Event> result = new List<Event>();
+        public List<YK.Platform.Core.Model.Event> GetConfig() {
+            List<YK.Platform.Core.Model.Event> result = new List<YK.Platform.Core.Model.Event>();
 
             string fileUrl = Directory.GetCurrentDirectory() + @"\App_Data\Event.Config";
             XmlDocument xd = new XmlDocument();
@@ -74,7 +79,7 @@ namespace YK.Platform.Core
             //循环遍历
             foreach (XmlNode item in xmlNodeList)
             {
-                Event eventEntity = new Event();
+                YK.Platform.Core.Model.Event eventEntity = new YK.Platform.Core.Model.Event();
                 eventEntity.Key = item.Attributes["Name"].Value;
                 eventEntity.Remark = item.Attributes["Remark"].Value;
 

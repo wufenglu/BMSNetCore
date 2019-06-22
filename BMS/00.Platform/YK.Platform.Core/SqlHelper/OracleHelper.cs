@@ -103,16 +103,17 @@ namespace YK.Platform.Core.SqlHelper
                         };
                     }
                     i = cmd.ExecuteNonQuery();
+                    return i;
                 }
                 catch (Exception ex)
                 {
+                    throw ex;
                 }
                 finally
                 {
                     conn.Close();
                     cmd.Parameters.Clear();
-                }
-                return i;
+                }                
             }
         }
 
@@ -185,16 +186,17 @@ namespace YK.Platform.Core.SqlHelper
                         }
                     }
                     oda.Fill(ds);
+                    return ds;
                 }
                 catch (Exception ex)
                 {
+                    throw ex;
                 }
                 finally
                 {
                     oda.SelectCommand.Parameters.Clear();
                     conn.Close();
-                }
-                return ds;
+                }                
             }
         }
 
@@ -269,12 +271,12 @@ namespace YK.Platform.Core.SqlHelper
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             finally
             {
                 cmd.Parameters.Clear();
             }
-            return null;
         }
 
         /// <summary>
@@ -349,16 +351,19 @@ namespace YK.Platform.Core.SqlHelper
                     {
                         return cmd.ExecuteScalar().ToString();
                     }
+                    else {
+                        return null;
+                    }
                 }
                 catch (Exception ex)
                 {
+                    throw ex;
                 }
                 finally
                 {
                     cmd.Parameters.Clear();
                     conn.Close();
                 }
-                return null;
             }
         }
 
