@@ -32,7 +32,7 @@ namespace BMS
 
             //services.AddSingleton<IConfiguration>(Configuration);
 
-            services.AddDbContext<ConfigContext>();
+            //services.AddDbContext<ConfigContext>();
             //services.AddDbContext<ConfigContext>(options =>
             //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

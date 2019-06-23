@@ -67,7 +67,9 @@ namespace YK.Platform.Core.CoreFramework
         /// <returns></returns>
         public List<TEntity> Find(System.Linq.Expressions.Expression<Func<TEntity, bool>> express)
         {
-            return Find(express);
+            //获取参数和条件
+            CoreFrameworkEntity lambdaEntity = GetLambdaEntity(express);
+            return this.CommonSearch(lambdaEntity);
         }
 
         /// <summary>

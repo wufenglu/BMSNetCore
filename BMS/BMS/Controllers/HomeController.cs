@@ -17,10 +17,10 @@ namespace BMS.Controllers
     public class HomeController : Controller
     {
         ConfigContext ConfigContext = null;
-        public HomeController(ConfigContext context, IConfiguration configuration, DbContextOptions<ConfigContext> options)
-        {
-            ConfigContext = context;
-        }
+        //public HomeController(ConfigContext context, IConfiguration configuration, DbContextOptions<ConfigContext> options)
+        //{
+        //    ConfigContext = context;
+        //}
 
         [HttpGet]
         public List<User> GetUsers()
@@ -40,18 +40,20 @@ namespace BMS.Controllers
 
             User user = EntityFactory.New<User>();
             user.UserName = "yank01";
+            user.IsEnable = true;
             Framework<User>.Instance().Insert(user);
 
             Framework<User>.Instance().Get(1);
 
-            var c = Framework<User>.Instance().Find(n => n.IsEnable == true);
+            var enableUsers = Framework<User>.Instance().Find(n => n.IsEnable == true);
 
             User userEf = new User();
             userEf.UserName = "yank02";
 
+            ConfigContext = new ConfigContext();
+
             int countA = ConfigContext.User.Count();
 
-            ConfigContext = new ConfigContext();
             ConfigContext.User.Add(userEf);
 
             int countB = ConfigContext.User.Count();
