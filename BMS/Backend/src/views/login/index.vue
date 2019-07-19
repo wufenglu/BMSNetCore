@@ -7,7 +7,18 @@
         <h3 class="title">{{ $t('login.title') }}</h3>
         <lang-select class="set-language"/>
       </div>
-
+      <el-form-item prop="tenant">
+        <span class="svg-container">
+          <svg-icon icon-class="tenant" />
+        </span>
+        <el-input
+          v-model="loginForm.tenant"
+          :placeholder="$t('login.tenant')"
+          name="tenant"
+          type="text"
+          auto-complete="on"
+        />
+      </el-form-item>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -63,7 +74,7 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+import { isvalidUsername, isvalidTenant } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
 
@@ -71,6 +82,13 @@ export default {
   name: 'Login',
   components: { LangSelect, SocialSign },
   data() {
+    const validateTenant = (rule, value, callback) => {
+      if (!isvalidTenant(value)) {
+        callback(new Error('Please enter the correct user name'))
+      } else {
+        callback()
+      }
+    }
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
         callback(new Error('Please enter the correct user name'))
@@ -87,10 +105,12 @@ export default {
     }
     return {
       loginForm: {
+        tenant: 'tenant',
         username: 'admin',
         password: '1111111'
       },
       loginRules: {
+        tenant: [{ required: true, trigger: 'blur', validator: validateTenant }],
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },

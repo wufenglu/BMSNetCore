@@ -9,11 +9,14 @@ export function fetchList(query) {
 }
 
 export function fetchArticle(id) {
-  return request({
+  var response = request({
     url: '/article/detail',
     method: 'get',
     params: { id }
   })
+
+  console.log(response)
+  return response
 }
 
 export function fetchPv(pv) {

@@ -75,6 +75,7 @@ export default {
   login: {
     title: 'Login Form',
     logIn: 'Log in',
+    tenant: 'tenant',
     username: 'Username',
     password: 'Password',
     any: 'any',

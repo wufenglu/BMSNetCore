@@ -344,5 +344,24 @@ export const asyncRouterMap = [
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
+
+  {
+    path: '/modeling',
+    component: Layout,
+    redirect: '/modeling/object/list',
+    name: 'modeling',
+    meta: {
+      title: 'modeling',
+      icon: 'modeling'
+    },
+    children: [
+      {
+        path: 'object/list',
+        component: () => import('@/views/modeling/object/list'),
+        name: 'ArticleList',
+        meta: { title: '对象列表', icon: 'list' }
+      }
+    ]
+  }
 ]
