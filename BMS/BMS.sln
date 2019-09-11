@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YK.Platform.Utility", "00.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{DCE46D42-A6A7-447D-AC04-673949B7028D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YK.Platform.SSO", "00.Platform\YK.Platform.SSO\YK.Platform.SSO.csproj", "{9768742B-B81B-41B5-813C-85A25D513076}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{DCE46D42-A6A7-447D-AC04-673949B7028D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE46D42-A6A7-447D-AC04-673949B7028D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE46D42-A6A7-447D-AC04-673949B7028D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9768742B-B81B-41B5-813C-85A25D513076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9768742B-B81B-41B5-813C-85A25D513076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9768742B-B81B-41B5-813C-85A25D513076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9768742B-B81B-41B5-813C-85A25D513076}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{FEEA8E86-4F23-4292-9789-785998D86F4F} = {F9FB5DDE-2767-420C-B07C-CD9F90724210}
 		{19216FA5-E5B0-4759-83FB-C0EEFF4FC1B9} = {F9FB5DDE-2767-420C-B07C-CD9F90724210}
 		{9462A03F-C253-42D4-B489-23AE433D3FDD} = {F9FB5DDE-2767-420C-B07C-CD9F90724210}
+		{9768742B-B81B-41B5-813C-85A25D513076} = {F9FB5DDE-2767-420C-B07C-CD9F90724210}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {252ADE01-EB64-42DA-BC5E-97F17735DAF4}
