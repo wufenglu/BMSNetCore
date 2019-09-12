@@ -11,8 +11,8 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             Jwt jwt = new Jwt();
-            jwt.SecretKey = "这里是密匙";
-            string token = jwt.GetToken("yank", "文档服务");
+            jwt.SecretKey = "SecretKey";
+            string token = jwt.GetToken("yank", "doc");
 
             string json = jwt.GetJson(token);
 
