@@ -11,4 +11,9 @@
     <ProjectReference Include="..\00.Platform\YK.Platform.Utility\YK.Platform.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="WebApi\" />
+    <Folder Include="领域代理\" />
+  </ItemGroup>
+
 </Project>
