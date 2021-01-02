@@ -33,7 +33,7 @@ namespace YK.Platform.Core.Pager
                             )_t WHERE rowindex BETWEEN {3} AND {4} ORDER BY rowindex
                             ";
             int StartIndex = pageSize * (pageIndex - 1);
-            int EndIndex = pageSize * pageIndex;
+            int EndIndex = pageSize * pageIndex-1;
             string cmdText = string.Format(pageCmdText, selectValue, tableName, where, StartIndex, EndIndex, orderBy);
 
             return cmdText;
